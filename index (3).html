@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>body{margin:0}[hidden]{display:none!important}img{max-width:100%}</style>
+<title>PGC Educator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Caveat:wght@600&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Layout concept: a school notebook page. Ruled-line paper, blue ink, a red margin line, yellow highlighter. One wide column, sections separated like chapters. */
+:root {
+  --paper: #f6f8fc;
+  --card: #ffffff;
+  --ink: #14213d;
+  --muted: #56627f;
+  --line: #d9e1f0;
+  --blue: #2447d6;
+  --on-blue: #ffffff;
+  --red: #d6455d;
+  --hl: #ffe680;
+  --font-display: "Bricolage Grotesque", "Trebuchet MS", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-hand: "Caveat", "Segoe Print", "Bradley Hand", cursive;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0f1526; --card: #171f38; --ink: #e8ecf8; --muted: #9aa6c4; --line: #26304f;
+    --blue: #8fa8ff; --on-blue: #0f1526; --red: #ff7b8f; --hl: #6b5a12;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0f1526; --card: #171f38; --ink: #e8ecf8; --muted: #9aa6c4; --line: #26304f;
+  --blue: #8fa8ff; --on-blue: #0f1526; --red: #ff7b8f; --hl: #6b5a12;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
+body {
+  background-color: var(--paper);
+  background-image: repeating-linear-gradient(to bottom, transparent 0, transparent 31px, var(--line) 31px, var(--line) 32px);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--paper); }
+a { color: var(--blue); }
+:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; border-radius: 4px; }
+.wrap { max-width: 1060px; margin: 0 auto; }
+h1, h2, h3 { font-family: var(--font-display); line-height: 1.1; margin: 0; text-wrap: balance; letter-spacing: -0.02em; }
+h2 { font-size: clamp(1.9rem, 4.5vw, 2.7rem); font-weight: 800; }
+h3 { font-size: 1.25rem; font-weight: 600; letter-spacing: -0.01em; }
+p { margin: 0; }
+.hand { font-family: var(--font-hand); font-size: 1.5rem; color: var(--red); line-height: 1; }
+.hl { background: linear-gradient(transparent 58%, var(--hl) 58%); padding: 0 0.1em; }
+.eyebrow { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+
+/* Header */
+header.top {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20;
+  background: var(--paper); border-bottom: 2px solid var(--ink);
+  margin-left: calc(-1 * max(16px, env(safe-area-inset-left, 0px)));
+  margin-right: calc(-1 * max(16px, env(safe-area-inset-right, 0px)));
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.top-in { max-width: 1060px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 12px; flex-wrap: wrap; }
+.brand { font-family: var(--font-display); font-weight: 800; font-size: 1.35rem; color: var(--ink); text-decoration: none; letter-spacing: -0.02em; }
+.brand span { color: var(--red); }
+nav { display: flex; align-items: center; gap: 6px 18px; flex-wrap: wrap; }
+nav a.link { color: var(--ink); text-decoration: none; font-weight: 500; font-size: 0.95rem; }
+nav a.link:hover { text-decoration: underline; text-underline-offset: 4px; }
+
+/* Buttons */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  font: 600 0.95rem var(--font-body); padding: 11px 20px; border-radius: 6px;
+  background: var(--blue); color: var(--on-blue); border: 2px solid var(--blue);
+  text-decoration: none; cursor: pointer; transition: transform .12s ease;
+}
+.btn:hover { transform: translateY(-2px); }
+.btn.ghost { background: transparent; color: var(--ink); border-color: var(--ink); }
+
+/* Hero */
+.hero { display: grid; grid-template-columns: 1.15fr 1fr; gap: 40px; align-items: center; padding-block: 64px 56px; }
+.hero > * { min-width: 0; }
+.hero h1 { font-size: clamp(2.4rem, 6.5vw, 4.4rem); font-weight: 800; margin: 10px 0 18px; }
+.hero p.lead { font-size: 1.12rem; color: var(--muted); max-width: 46ch; }
+.cta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
+.page {
+  background: var(--card); border: 2px solid var(--ink); border-radius: 4px;
+  padding: 26px 24px 26px 56px; position: relative; transform: rotate(1.6deg);
+  box-shadow: 8px 8px 0 var(--blue);
+  background-image: repeating-linear-gradient(to bottom, transparent 0, transparent 31px, var(--line) 31px, var(--line) 32px);
+}
+.page::before { content: ""; position: absolute; left: 38px; top: 0; bottom: 0; width: 2px; background: var(--red); }
+.page .hand { font-size: 1.9rem; margin-bottom: 10px; }
+.page ul { list-style: none; margin: 0; padding: 0; }
+.page li { line-height: 32px; font-weight: 500; }
+.page li small { color: var(--muted); font-weight: 400; }
+
+/* Sections */
+section { padding-block: 56px; }
+.sec-head { margin-bottom: 28px; display: flex; flex-direction: column; gap: 10px; max-width: 60ch; }
+.sec-head p { color: var(--muted); }
+
+/* Video library */
+.filters { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 24px; }
+.chip {
+  font: 500 0.92rem var(--font-body); padding: 8px 16px; border-radius: 999px; cursor: pointer;
+  background: var(--card); color: var(--ink); border: 2px solid var(--ink);
+}
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+.filters label { font-size: 0.9rem; color: var(--muted); margin-left: auto; display: flex; align-items: center; gap: 8px; }
+.filters select {
+  font: 500 0.92rem var(--font-body); padding: 8px 12px; border-radius: 6px;
+  border: 2px solid var(--ink); background: var(--card); color: var(--ink);
+}
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 18px; }
+.vcard {
+  display: flex; flex-direction: column; min-width: 0; text-decoration: none; color: var(--ink);
+  background: var(--card); border: 2px solid var(--ink); border-radius: 6px; overflow: hidden;
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.vcard:hover { transform: translate(-3px, -3px); box-shadow: 5px 5px 0 var(--ink); }
+.vcard .cover {
+  position: relative; padding: 18px 18px 14px 44px; border-bottom: 2px solid var(--ink);
+  background-image: repeating-linear-gradient(to bottom, transparent 0, transparent 23px, var(--line) 23px, var(--line) 24px);
+}
+.vcard .cover::before { content: ""; position: absolute; left: 30px; top: 0; bottom: 0; width: 2px; background: var(--red); }
+.vcard .num { font-family: var(--font-display); font-weight: 800; font-size: 3rem; line-height: 1; letter-spacing: -0.04em; }
+.vcard .num small { font-size: 0.9rem; font-weight: 600; letter-spacing: 0; margin-left: 6px; color: var(--muted); }
+.vcard .body { padding: 14px 18px 18px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+.vcard h3 { font-size: 1.05rem; }
+.vcard p { font-size: 0.9rem; color: var(--muted); }
+.vcard .go { margin-top: auto; padding-top: 8px; font-weight: 600; font-size: 0.9rem; color: var(--blue); }
+.empty { color: var(--muted); padding: 24px 0; }
+
+/* Courses */
+.courses { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 22px; }
+.course {
+  background: var(--card); border: 2px solid var(--ink); border-radius: 6px; padding: 24px;
+  display: flex; flex-direction: column; gap: 14px; min-width: 0;
+}
+.course .tag { align-self: flex-start; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; background: var(--hl); padding: 3px 10px; border-radius: 3px; color: var(--ink); }
+.course ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 6px; font-size: 0.95rem; }
+.course li { padding-left: 24px; position: relative; }
+.course li::before { content: "✓"; position: absolute; left: 0; color: var(--red); font-weight: 700; }
+.price-row { margin-top: auto; display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding-top: 10px; border-top: 2px dashed var(--line); }
+.price { font-family: var(--font-display); font-weight: 800; font-size: 2rem; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+.price small { font-family: var(--font-body); font-size: 0.8rem; color: var(--muted); font-weight: 400; letter-spacing: 0; }
+.notice { font-size: 0.9rem; background: var(--hl); color: var(--ink); padding: 10px 12px; border-radius: 4px; }
+.notice[hidden] { display: none; }
+
+/* Steps */
+.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 22px; counter-reset: s; list-style: none; padding: 0; margin: 0; }
+.steps li { counter-increment: s; border-top: 3px solid var(--ink); padding-top: 14px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.steps li::before { content: "Step " counter(s); font-family: var(--font-hand); font-size: 1.6rem; color: var(--red); line-height: 1; }
+.steps p { color: var(--muted); font-size: 0.95rem; }
+
+/* About */
+.about { display: grid; grid-template-columns: 1fr 1.4fr; gap: 40px; align-items: start; }
+.about > * { min-width: 0; }
+.about p + p { margin-top: 14px; }
+.subjects { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.subjects span { border: 2px solid var(--ink); border-radius: 999px; padding: 4px 14px; font-size: 0.9rem; font-weight: 500; background: var(--card); }
+
+.soon { background: var(--card); border: 2px dashed var(--ink); border-radius: 6px; padding: 36px 28px; display: flex; flex-direction: column; gap: 14px; align-items: flex-start; max-width: 720px; }
+.soon .hand { font-size: 2.2rem; }
+.soon .subjects { margin-top: 0; }
+.soon p { color: var(--muted); }
+.follow-row { display: flex; gap: 12px; flex-wrap: wrap; }
+.foot-links { display: flex; gap: 18px; flex-wrap: wrap; }
+footer { border-top: 2px solid var(--ink); padding-block: 28px 40px; display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: space-between; color: var(--muted); font-size: 0.9rem; }
+
+@media (max-width: 760px) {
+  .hero, .about { grid-template-columns: 1fr; gap: 32px; }
+  .hero { padding-block: 40px 32px; }
+  .page { transform: none; box-shadow: 6px 6px 0 var(--blue); }
+  section { padding-block: 40px; }
+  .filters label { margin-left: 0; }
+}
+
+.vcard { cursor: pointer; text-align: left; font: inherit; padding: 0; width: 100%; }
+.vcard .thumb { position: relative; aspect-ratio: 16 / 9; width: 100%; border-bottom: 2px solid var(--ink); overflow: hidden;
+  background-color: var(--card);
+  background-image: repeating-linear-gradient(to bottom, transparent 0, transparent 23px, var(--line) 23px, var(--line) 24px); }
+.vcard .thumb::before { content: ""; position: absolute; left: 30px; top: 0; bottom: 0; width: 2px; background: var(--red); }
+.vcard .thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.vcard .thumb .fallback { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding-left: 40px; font-family: var(--font-display); font-weight: 800; font-size: 1.6rem; color: var(--ink); text-align: center; line-height: 1.1; }
+.vcard .play { position: absolute; right: 12px; bottom: 12px; width: 44px; height: 44px; border-radius: 50%; background: var(--blue); color: var(--on-blue); border: 2px solid var(--ink); display: flex; align-items: center; justify-content: center; font-size: 1rem; }
+.vcard h3 { font-size: 1rem; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.vcard .meta { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.vcard .body { padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+.count { color: var(--muted); font-size: 0.9rem; margin: -8px 0 18px; }
+dialog.player { width: min(900px, 94vw); max-width: 94vw; padding: 0; border: 2px solid var(--ink); border-radius: 6px; background: var(--card); color: var(--ink); box-shadow: 8px 8px 0 var(--blue); }
+dialog.player::backdrop { background: rgba(10, 16, 36, 0.72); }
+.player-bar { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 10px 14px; border-bottom: 2px solid var(--ink); }
+.player-bar strong { font-family: var(--font-display); font-size: 1rem; min-width: 0; }
+.player-frame { aspect-ratio: 16 / 9; width: 100%; background: #000; }
+.player-frame iframe { width: 100%; height: 100%; border: 0; display: block; }
+.player-foot { padding: 10px 14px; font-size: 0.9rem; color: var(--muted); display: flex; gap: 8px 16px; flex-wrap: wrap; align-items: center; justify-content: space-between; }
+.close { font: 600 0.9rem var(--font-body); padding: 6px 14px; border-radius: 6px; background: var(--card); color: var(--ink); border: 2px solid var(--ink); cursor: pointer; flex: none; }
+.facts { margin: 22px 0 0; padding: 0; display: grid; gap: 0; border-top: 2px solid var(--ink); max-width: 360px; }
+.facts div { display: flex; justify-content: space-between; gap: 16px; padding: 10px 0; border-bottom: 2px dashed var(--line); }
+.facts dt { color: var(--muted); font-size: 0.9rem; }
+.facts dd { margin: 0; font-weight: 600; text-align: right; }
+.contact-line { font-size: 1rem; color: var(--ink) !important; }
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="top-in">
+      <a class="brand" href="#top">PGC <span>Educator</span></a>
+      <nav aria-label="Main">
+        <a class="link" href="#free-videos">Videos</a>
+        <a class="link" href="#courses">Courses</a>
+        <a class="link" href="#about">About</a>
+        <a class="link" href="#contact">Contact</a>
+        <a class="btn" href="https://www.youtube.com/@pgceducator" target="_blank" rel="noopener">YouTube channel</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <div class="hero">
+      <div>
+        <span class="hand">Social Studies, made simple</span>
+        <h1>Learn NCERT Social Science for Classes 6 to 10 <span class="hl">clearly</span>.</h1>
+        <p class="lead">Chapter-wise explanations, important MCQs and interesting General Knowledge topics. Watch every lesson right here for free, without leaving the website.</p>
+        <div class="cta-row">
+          <a class="btn" href="#free-videos">Watch free videos</a>
+          <a class="btn ghost" href="#contact">Contact us</a>
+        </div>
+      </div>
+      <aside class="page" aria-label="What you will find here">
+        <div class="hand">What's inside</div>
+        <ul>
+          <li>NCERT Social Science <small>· Classes 6–10</small></li>
+          <li>Full chapter explanations</li>
+          <li>Important MCQs and Q&amp;A</li>
+          <li>General Knowledge topics</li>
+          <li>Taught by Priyanka Gussain</li>
+        </ul>
+      </aside>
+    </div>
+
+    <section id="free-videos">
+      <div class="sec-head">
+        <span class="eyebrow">Free to watch</span>
+        <h2>Video lessons</h2>
+        <p>Choose a subject or class, then tap a lesson to watch it here.</p>
+      </div>
+      <div class="filters" role="group" aria-label="Filter videos">
+        <span id="subject-chips" style="display:contents"></span>
+        <label for="class-select">Class
+          <select id="class-select"><option value="all">All</option></select>
+        </label>
+      </div>
+      <p class="count" id="video-count" aria-live="polite"></p>
+      <div class="grid" id="video-grid"></div>
+      <p class="empty" id="video-empty" hidden>No lessons match this filter.</p>
+    </section>
+
+    <section id="courses">
+      <div class="soon">
+        <span class="hand">Coming soon</span>
+        <h2>Courses are launching soon</h2>
+        <p>Full courses with lessons in order, chapter notes and practice questions are on the way.</p>
+        <p>Follow PGC Educator on YouTube, Instagram or Facebook to hear the moment they open.</p>
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="about">
+        <div>
+          <span class="eyebrow">About</span>
+          <h2 style="margin-top:10px">Hello, I'm <span class="hl">Priyanka Gussain</span></h2>
+          <dl class="facts">
+            <div><dt>Role</dt><dd>Founder &amp; CEO</dd></div>
+            <div><dt>Location</dt><dd>Delhi</dd></div>
+            <div><dt>Established</dt><dd>2026</dd></div>
+          </dl>
+        </div>
+        <div>
+          <p>Welcome to PGC Educator. Here I share Social Studies learning resources for Classes 6 to 10, mainly based on NCERT, explained in a simple and easy-to-understand way. My aim is to help students understand concepts clearly and build a strong foundation in Social Studies, rather than simply memorising the content.</p>
+          <p>Along with the regular school syllabus, I also bring interesting and informative topics that help students explore new ideas, improve their general knowledge and learn beyond the classroom.</p>
+          <p>Whether you are studying for school, revising important concepts, or simply curious to learn something new, PGC Educator is here to make your learning journey easier and more interesting.</p>
+          <div class="subjects"><span>Social Science</span><span>General Knowledge</span><span>NCERT Classes 6–10</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="soon">
+        <span class="hand">Say hello</span>
+        <h2>Want to know more?</h2>
+        <p>Have a question or suggestion? Fill in the short form and our team will get in touch with you.</p>
+        <a class="btn" href="https://docs.google.com/forms/d/1XsVt-Ew1g_iLW8ssgjbKwVuq0mgB3W57vf15M1txQFY/viewform" target="_blank" rel="noopener">Fill the contact form</a>
+        <p class="contact-line">Email: <a href="mailto:priyankagusain2359@gmail.com">priyankagusain2359@gmail.com</a></p>
+      </div>
+    </section>
+
+    <section id="follow">
+      <div class="sec-head">
+        <span class="eyebrow">Stay connected</span>
+        <h2>Follow PGC Educator</h2>
+        <p>New lessons and updates are posted on all three.</p>
+      </div>
+      <div class="follow-row">
+        <a class="btn" href="https://www.youtube.com/@pgceducator" target="_blank" rel="noopener">YouTube</a>
+        <a class="btn ghost" href="https://www.instagram.com/pgceducator" target="_blank" rel="noopener">Instagram</a>
+        <a class="btn ghost" href="https://www.facebook.com/share/1AsJepMFqm/" target="_blank" rel="noopener">Facebook</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span>© 2026 PGC Educator · Priyanka Gussain · Delhi</span>
+    <span class="foot-links">
+      <a href="https://www.youtube.com/@pgceducator" target="_blank" rel="noopener">YouTube</a>
+      <a href="https://www.instagram.com/pgceducator" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://www.facebook.com/share/1AsJepMFqm/" target="_blank" rel="noopener">Facebook</a>
+    </span>
+  </footer>
+</div>
+
+<dialog class="player" id="player" aria-label="Video player">
+  <div class="player-bar"><strong id="player-title"></strong><button class="close" type="button" id="player-close">Close</button></div>
+  <div class="player-frame" id="player-frame"></div>
+  <div class="player-foot"><span id="player-meta"></span><a id="player-yt" href="#" target="_blank" rel="noopener">Open on YouTube</a></div>
+</dialog>
+
+<script>
+/* ===== GOOGLE ANALYTICS: paste your GA4 Measurement ID between the quotes, like "G-ABC123XYZ4". Leave it empty to keep analytics off. ===== */
+var GA_ID = "";
+if (GA_ID) {
+  var gs = document.createElement("script"); gs.async = true;
+  gs.src = "https://www.googletagmanager.com/gtag/js?id=" + GA_ID;
+  document.head.appendChild(gs);
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function () { window.dataLayer.push(arguments); };
+  gtag("js", new Date()); gtag("config", GA_ID);
+}
+/* ============================================================================================================================ */
+
+/* ===== TO ADD A NEW VIDEO: copy one line below, paste it at the end of the list, and change the 4 values.
+   id      = the 11 letters after "watch?v=" in the YouTube link
+   title   = video title
+   cls     = "Class 6", "Class 7" ... or "All Levels"
+   subject = "Social Science" or "General Knowledge" (or any new subject name)   ===== */
+var VIDEOS = [
+  {"id": "VHHzqXkfuL0", "title": "India's Cultural Roots | Class 6 Chapter 7 Important MCQs | NCERT Social Science", "cls": "Class 6", "subject": "Social Science"},
+  {"id": "6NaBHsGplxY", "title": "NCERT Class-6th Social Science Chapter-7 India's Cultural Roots", "cls": "Class 6", "subject": "Social Science"},
+  {"id": "ZMwSO-6vWcw", "title": "NCERT Class 6 Social Science | Ch-7 India's Cultural Roots | Full Chapter Explanation | Part-2", "cls": "Class 6", "subject": "Social Science"},
+  {"id": "Le76ADJ53UY", "title": "NCERT Class 6 Social Science | Ch-7 India's Cultural Roots | Full Chapter Explanation | Part-1", "cls": "Class 6", "subject": "Social Science"},
+  {"id": "5h871M4gTIY", "title": "The beginnings of Indian Civilisation | Class 6 Chapter 6 Important MCQs | NCERT Social Science", "cls": "Class 6", "subject": "Social Science"},
+  {"id": "uSmy84tk_XE", "title": "India, that is Bharat | Class 6 Chapter 5 Important MCQs | NCERT Social Science", "cls": "Class 6", "subject": "Social Science"},
+  {"id": "g98nUe5gYy8", "title": "Timeline and Sources of History | Class 6 Chapter 4 Important MCQs | NCERT Social Science", "cls": "Class 6", "subject": "Social Science"},
+  {"id": "VImXWQztpLI", "title": "Landforms and Life | Class 6 Chapter 3 Important MCQs | NCERT Social Science", "cls": "Class 6", "subject": "Social Science"},
+  {"id": "EXvfMDJcdMw", "title": "From Prince Siddhartha to Buddha | The Journey of Wisdom, Compassion & Enlightenment", "cls": "All Levels", "subject": "General Knowledge"},
+  {"id": "rdL0CaLuVBw", "title": "Oceans and Continents | Class 6 Chapter 2 Important MCQs | NCERT Social Science", "cls": "Class 6", "subject": "Social Science"},
+  {"id": "Yb2J7UswbtA", "title": "NCERT Class 6 Social Science | Ch-6 The beginnings of Indian Civilisation | Full Chapter Explanation", "cls": "Class 6", "subject": "Social Science"},
+  {"id": "tBs0VrsZXZg", "title": "Locating Places on the Earth | Class 6 Chapter 1 Important Q&A | NCERT Social Science", "cls": "Class 6", "subject": "Social Science"},
+  {"id": "-MrX8a2IK6I", "title": "NCERT Class-6th Social Science Ch-5 India, that is Bharat.", "cls": "Class 6", "subject": "Social Science"},
+  {"id": "lkf3ieXAazY", "title": "NCERT Class 6 Social Science | Ch-5 India, that is Bharat | Full Chapter Explanation", "cls": "Class 6", "subject": "Social Science"},
+  {"id": "1poBnSUtxuQ", "title": "NCERT Class 6 Social Science | Ch-4 Timeline and Sources of History | Full Chapter Explanation", "cls": "Class 6", "subject": "Social Science"},
+  {"id": "67To75IotPg", "title": "NCERT Class 6 Social Science | Ch-3 Landforms and Life | Full Chapter Explanation", "cls": "Class 6", "subject": "Social Science"},
+  {"id": "EvSK1-K350E", "title": "NCERT Class 6 Social Science | Ch-2 Oceans and Continents | Full Chapter Explanation", "cls": "Class 6", "subject": "Social Science"},
+  {"id": "FuN3A4fR0L0", "title": "NCERT Class 6 Social Science | Ch-1 Locating places on the Earth | Full Chapter Explanation", "cls": "Class 6", "subject": "Social Science"},
+  {"id": "X-ezr2E5sr0", "title": "List of All Prime Ministers of India (1947-2026) | Bharat ke Pradhanmantri 🇮🇳", "cls": "All Levels", "subject": "General Knowledge"},
+  {"id": "eVlCn0onZJg", "title": "List of All Presidents of India (1950-2026) | Bharat ke Rashtrapati 🇮🇳", "cls": "All Levels", "subject": "General Knowledge"}
+];
+/* ============================================================================================= */
+
+var subjectFilter = "all", classFilter = "all";
+var grid = document.getElementById("video-grid");
+var emptyMsg = document.getElementById("video-empty");
+var countEl = document.getElementById("video-count");
+var dlg = document.getElementById("player");
+var lastCard = null;
+
+function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+function uniq(key) { var seen = {}, out = []; VIDEOS.forEach(function (v) { if (!seen[v[key]]) { seen[v[key]] = 1; out.push(v[key]); } }); return out; }
+
+function buildFilters() {
+  var chips = ["All subjects"].concat(uniq("subject")), box = document.getElementById("subject-chips");
+  box.innerHTML = chips.map(function (s, i) {
+    return '<button class="chip" type="button" data-subject="' + (i ? esc(s) : "all") + '" aria-pressed="' + (i ? "false" : "true") + '">' + esc(s) + "</button>";
+  }).join("");
+  box.querySelectorAll(".chip").forEach(function (chip) {
+    chip.addEventListener("click", function () {
+      subjectFilter = chip.getAttribute("data-subject");
+      box.querySelectorAll(".chip").forEach(function (c) { c.setAttribute("aria-pressed", c === chip ? "true" : "false"); });
+      renderVideos();
+    });
+  });
+  var sel = document.getElementById("class-select");
+  uniq("cls").forEach(function (c) { var o = document.createElement("option"); o.value = c; o.textContent = c; sel.appendChild(o); });
+  sel.addEventListener("change", function () { classFilter = sel.value; renderVideos(); });
+}
+
+function renderVideos() {
+  var list = VIDEOS.filter(function (v) {
+    return (subjectFilter === "all" || v.subject === subjectFilter) && (classFilter === "all" || v.cls === classFilter);
+  });
+  grid.innerHTML = list.map(function (v) {
+    return '<button class="vcard" type="button" data-id="' + esc(v.id) + '">' +
+      '<span class="thumb"><span class="fallback">' + esc(v.cls) + '</span>' +
+      '<img src="https://i.ytimg.com/vi/' + esc(v.id) + '/hqdefault.jpg" alt="" loading="lazy" onerror="this.remove()">' +
+      '<span class="play" aria-hidden="true">▶</span></span>' +
+      '<span class="body"><span class="meta">' + esc(v.cls) + " · " + esc(v.subject) + "</span><h3>" + esc(v.title) + "</h3></span></button>";
+  }).join("");
+  emptyMsg.hidden = list.length > 0;
+  countEl.textContent = list.length + (list.length === 1 ? " lesson" : " lessons");
+}
+
+grid.addEventListener("click", function (e) {
+  var card = e.target.closest(".vcard"); if (!card) return;
+  var v = VIDEOS.filter(function (x) { return x.id === card.getAttribute("data-id"); })[0];
+  if (!v) return;
+  lastCard = card;
+  document.getElementById("player-title").textContent = v.title;
+  document.getElementById("player-meta").textContent = v.cls + " · " + v.subject;
+  document.getElementById("player-yt").href = "https://www.youtube.com/watch?v=" + v.id;
+  var f = document.createElement("iframe");
+  f.src = "https://www.youtube-nocookie.com/embed/" + v.id + "?autoplay=1&rel=0";
+  f.title = v.title;
+  f.allow = "autoplay; encrypted-media; picture-in-picture; fullscreen";
+  f.allowFullscreen = true;
+  var frame = document.getElementById("player-frame"); frame.innerHTML = ""; frame.appendChild(f);
+  if (dlg.showModal) dlg.showModal(); else dlg.setAttribute("open", "");
+});
+function closePlayer() {
+  document.getElementById("player-frame").innerHTML = "";
+  if (dlg.close) { if (dlg.open) dlg.close(); } else dlg.removeAttribute("open");
+  if (lastCard) lastCard.focus();
+}
+document.getElementById("player-close").addEventListener("click", closePlayer);
+dlg.addEventListener("cancel", function (e) { e.preventDefault(); closePlayer(); });
+dlg.addEventListener("click", function (e) { if (e.target === dlg) closePlayer(); });
+
+buildFilters();
+renderVideos();
+</script>
+
+</body>
+</html>
