@@ -617,12 +617,12 @@ dialog.login::backdrop { background: rgba(10, 16, 36, 0.72); }
     setTimeout(closeModal, 900);
   });
 
-  updateButton();
-  // Opens by itself once, 1.5 seconds after a first visit.
+    updateButton();
+  // Opens on every visit until the student saves their details. Skip only closes it for now.
   setTimeout(function () {
-    if (!read(KEY_STATE) && !document.querySelector("dialog[open]")) openModal();
-  }, 1500);
-})();
+    if (read(KEY_STATE) !== "submitted" && !document.querySelector("dialog[open]")) openModal();
+  }, 500);
+})();})();
 </script>
 <!-- STUDENT LOGIN END -->
 </html>
