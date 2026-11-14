@@ -240,6 +240,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <a class="link" href="#courses">Courses</a>
         <a class="link" href="#about">About</a>
         <a class="link" href="#contact">Contact</a>
+        <button class="btn ghost" type="button" id="login-btn">Student Login</button>
         <a class="btn" href="https://www.youtube.com/@pgceducator" target="_blank" rel="noopener">YouTube channel</a>
       </nav>
     </div>
@@ -346,15 +347,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </section>
   </main>
 
-  <footer>
-    <span>© 2026 PGC EDUCATOR · Priyanka Gusain Chandra · Delhi</span>
-    <span class="foot-links">
-      <a href="https://www.youtube.com/@pgceducator" target="_blank" rel="noopener">YouTube</a>
-      <a href="https://www.instagram.com/pgceducator" target="_blank" rel="noopener">Instagram</a>
-      <a href="https://www.facebook.com/share/1AsJepMFqm/" target="_blank" rel="noopener">Facebook</a>
-      <a href="https://t.me/pgceducator" target="_blank" rel="noopener">Telegram</a>
-    </span>
-  </footer>
+ <footer>
+  <span>© 2026 PGC Educator · Delhi, India</span>
+  <span class="foot-links">
+    <a href="/privacy-policy.html">Privacy Policy</a>
+    <a href="/terms.html">Terms</a>
+    <a href="/refund-policy.html">Refund Policy</a>
+  </span>
+  <span class="foot-links">
+    <a href="https://www.youtube.com/@pgceducator" target="_blank" rel="noopener">YouTube</a>
+    <a href="https://www.instagram.com/pgceducator" target="_blank" rel="noopener">Instagram</a>
+    <a href="https://www.facebook.com/share/1AsJepMFqm/" target="_blank" rel="noopener">Facebook</a>
+    <a href="https://t.me/pgceducator" target="_blank" rel="noopener">Telegram</a>
+  </span>
+</footer>
 </div>
 
 <dialog class="player" id="player" aria-label="Video player">
@@ -477,4 +483,146 @@ renderVideos();
 </script>
 
 </body>
+  <!-- STUDENT LOGIN START: paste this whole block just above </body> -->
+<style>
+dialog.login { width: min(780px, 94vw); max-height: 94vh; overflow: auto; padding: 0; border: 2px solid var(--ink); border-radius: 8px; background: var(--card); color: var(--ink); box-shadow: 8px 8px 0 var(--blue); }
+dialog.login::backdrop { background: rgba(10, 16, 36, 0.72); }
+.lg { display: grid; grid-template-columns: 5fr 6fr; position: relative; }
+.lg-side { display: flex; flex-direction: column; gap: 14px; padding: 30px 26px; background-color: var(--blue); color: var(--on-blue);
+  background-image: repeating-linear-gradient(to bottom, transparent 0, transparent 31px, color-mix(in srgb, var(--on-blue) 16%, transparent) 31px, color-mix(in srgb, var(--on-blue) 16%, transparent) 32px); }
+.lg-side .hand { color: var(--on-blue); font-size: 1.7rem; }
+.lg-side h2 { font-size: clamp(1.7rem, 3.4vw, 2.2rem); color: var(--on-blue); }
+.lg-side ul { list-style: none; margin: 6px 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: 0.95rem; }
+.lg-side li { padding-left: 26px; position: relative; }
+.lg-side li::before { content: "✓"; position: absolute; left: 0; font-weight: 700; }
+.lg-main { padding: 30px 26px 24px; display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.lg-main h3 { font-size: 1.25rem; padding-right: 44px; }
+.lg-x { position: absolute; top: 12px; right: 12px; width: 36px; height: 36px; border-radius: 6px; border: 2px solid var(--ink); background: var(--card); color: var(--ink); font-size: 1.3rem; line-height: 1; cursor: pointer; z-index: 2; }
+.lg-field { display: flex; flex-direction: column; gap: 6px; font-size: 0.9rem; font-weight: 600; border: 0; padding: 0; margin: 0; min-width: 0; }
+.lg-field input[type="text"] { font: 400 1rem var(--font-body); padding: 11px 12px; border: 2px solid var(--ink); border-radius: 6px; background: var(--card); color: var(--ink); width: 100%; }
+.lg-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.lg-chips label { position: relative; font-weight: 500; }
+.lg-chips input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.lg-chips span { display: inline-block; min-width: 44px; text-align: center; padding: 8px 14px; border: 2px solid var(--ink); border-radius: 999px; background: var(--card); }
+.lg-chips input:checked + span { background: var(--ink); color: var(--paper); }
+.lg-chips input:focus-visible + span { outline: 3px solid var(--blue); outline-offset: 2px; }
+.lg-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
+.lg-actions .btn { width: 100%; }
+.lg-msg { font-weight: 600; min-height: 1.2em; margin: 0; }
+.lg-note { font-size: 0.8rem; color: var(--muted); margin: 0; }
+@media (max-width: 620px) {
+  .lg { grid-template-columns: 1fr; }
+  .lg-side { padding: 20px 60px 18px 20px; gap: 6px; }
+  .lg-side ul { display: none; }
+  .lg-main { padding: 20px; }
+}
+</style>
+
+<dialog class="login" id="login-modal" aria-labelledby="login-title">
+  <div class="lg">
+    <button class="lg-x" type="button" id="login-close" aria-label="Close">&times;</button>
+    <div class="lg-side">
+      <span class="hand">Welcome, student</span>
+      <h2>Learn Social Studies, free.</h2>
+      <ul>
+        <li>Every video lesson is free to watch</li>
+        <li>No login is needed to study</li>
+        <li>Tell us your class and we can share the right notes and updates</li>
+      </ul>
+    </div>
+    <form class="lg-main" id="login-form" novalidate>
+      <h3 id="login-title">Student Login <small style="font-weight:500;color:var(--muted);font-size:.8rem">(optional)</small></h3>
+      <label class="lg-field" for="login-name">Student name
+        <input id="login-name" type="text" maxlength="80" autocomplete="name">
+      </label>
+      <fieldset class="lg-field">
+        <legend>Your class</legend>
+        <div class="lg-chips">
+          <label><input type="radio" name="login-class" value="Class 6"><span>6</span></label>
+          <label><input type="radio" name="login-class" value="Class 7"><span>7</span></label>
+          <label><input type="radio" name="login-class" value="Class 8"><span>8</span></label>
+          <label><input type="radio" name="login-class" value="Class 9"><span>9</span></label>
+          <label><input type="radio" name="login-class" value="Class 10"><span>10</span></label>
+          <label><input type="radio" name="login-class" value="Other / GK"><span>Other / GK</span></label>
+        </div>
+      </fieldset>
+      <label class="lg-field" for="login-contact">Email or WhatsApp number
+        <input id="login-contact" type="text" maxlength="120" autocomplete="off">
+      </label>
+      <div class="lg-actions">
+        <button class="btn" type="submit">Save my details</button>
+        <button class="btn ghost" type="button" id="login-skip">Skip for Now &mdash; Watch Without Login &rarr;</button>
+      </div>
+      <p class="lg-msg" id="login-msg" role="status"></p>
+      <p class="lg-note">Students under 18 should ask a parent or guardian before sharing details. Read our <a href="/privacy-policy.html">Privacy Policy</a>.</p>
+    </form>
+  </div>
+</dialog>
+
+<script>
+(function () {
+  // After you deploy the Google Apps Script, paste its Web app URL between the quotes.
+  var GOOGLE_SHEET_WEBHOOK = "";
+
+  var KEY_STATE = "pgc_login_state", KEY_NAME = "pgc_student_name", KEY_CLASS = "pgc_student_class";
+  var dlg = document.getElementById("login-modal");
+  var btn = document.getElementById("login-btn");
+  var form = document.getElementById("login-form");
+  var nameEl = document.getElementById("login-name");
+  var contactEl = document.getElementById("login-contact");
+  var msg = document.getElementById("login-msg");
+
+  function read(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  function save(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+  function chosenClass() { var r = form.querySelector('input[name="login-class"]:checked'); return r ? r.value : ""; }
+
+  function updateButton() {
+    if (!btn) return;
+    var n = read(KEY_NAME);
+    btn.textContent = n ? "Hi, " + n.trim().split(/\s+/)[0] : "Student Login";
+  }
+  function openModal() {
+    nameEl.value = read(KEY_NAME) || "";
+    var c = read(KEY_CLASS);
+    if (c) { var r = form.querySelector('input[name="login-class"][value="' + c + '"]'); if (r) r.checked = true; }
+    msg.textContent = "";
+    if (dlg.showModal) dlg.showModal(); else dlg.setAttribute("open", "");
+  }
+  function closeModal() {
+    if (dlg.close) { if (dlg.open) dlg.close(); } else dlg.removeAttribute("open");
+  }
+
+  if (btn) btn.addEventListener("click", openModal);
+  document.getElementById("login-close").addEventListener("click", closeModal);
+  document.getElementById("login-skip").addEventListener("click", closeModal);
+  dlg.addEventListener("click", function (e) { if (e.target === dlg) closeModal(); });
+  // Closing in any way (x, Skip, outside click, Esc) counts as skipped, unless details were already saved.
+  dlg.addEventListener("close", function () { if (!read(KEY_STATE)) save(KEY_STATE, "skipped"); });
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var data = { name: nameEl.value.trim(), studentClass: chosenClass(), contact: contactEl.value.trim(), timestamp: new Date().toISOString() };
+    var hasAny = data.name || data.studentClass || data.contact;
+    if (!hasAny) { closeModal(); return; }
+    if (data.name) save(KEY_NAME, data.name);
+    if (data.studentClass) save(KEY_CLASS, data.studentClass);
+    save(KEY_STATE, "submitted");
+    if (GOOGLE_SHEET_WEBHOOK) {
+      try {
+        fetch(GOOGLE_SHEET_WEBHOOK, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(data) }).catch(function () {});
+      } catch (err) {}
+    }
+    msg.textContent = "Thank you!";
+    updateButton();
+    setTimeout(closeModal, 900);
+  });
+
+  updateButton();
+  // Opens by itself once, 1.5 seconds after a first visit.
+  setTimeout(function () {
+    if (!read(KEY_STATE) && !document.querySelector("dialog[open]")) openModal();
+  }, 1500);
+})();
+</script>
+<!-- STUDENT LOGIN END -->
 </html>
