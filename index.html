@@ -597,7 +597,7 @@ dialog.login::backdrop { background: rgba(10, 16, 36, 0.72); }
   document.getElementById("login-skip").addEventListener("click", closeModal);
   dlg.addEventListener("click", function (e) { if (e.target === dlg) closeModal(); });
   // Closing in any way (x, Skip, outside click, Esc) counts as skipped, unless details were already saved.
-  dlg.addEventListener("close", function () { if (!read(KEY_STATE)) save(KEY_STATE, "skipped"); });
+  dlg.addEventListener("close", function () { if (read(KEY_STATE) !== "submitted") save(KEY_STATE, "skipped"); save("pgc_login_seen", String(Date.now())); });
 
   form.addEventListener("submit", function (e) {
     e.preventDefault();
